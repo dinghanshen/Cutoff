@@ -1,1 +1,1 @@
-# Cutoff -- Data Augmentation for Natural Language Understanding and Generation)
+# Cutoff: Data Augmentation for Natural Language Understanding and Generation

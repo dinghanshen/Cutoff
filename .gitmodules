@@ -1,0 +1,4 @@
+[submodule "translation"]
+	path = translation
+	url = https://github.com/stevezheng23/fairseq_extension.git
+	branch = master

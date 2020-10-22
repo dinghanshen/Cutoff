@@ -16,8 +16,8 @@ python run_glue.py \
   --aug_js_loss 1.0 \
   --learning_rate 5e-6 \
   --num_train_epochs 10.0 \
-  --logging_steps 100 \
-  --save_steps 100 \
+  --logging_steps 500 \
+  --save_steps 500 \
   --per_gpu_train_batch_size 8 \
   --output_dir results/$TASK_NAME-roberta_base-cutoff \
   --overwrite_output_dir

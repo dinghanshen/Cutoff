@@ -1,3 +1,5 @@
+""" Cutoff: A Simple but Tough-to-Beat Data Augmentation Approach for Natural Language Understanding and Generation.  """
+
 import json
 import logging
 import math
@@ -36,34 +38,16 @@ try:
 except ImportError:
     _has_apex = False
 
-import pdb
-
-
 def is_apex_available():
     return _has_apex
-
 
 if is_tpu_available():
     import torch_xla.core.xla_model as xm
     import torch_xla.debug.metrics as met
     import torch_xla.distributed.parallel_loader as pl
 
-# try:
-#     from torch.utils.tensorboard import SummaryWriter
-#
-#     _has_tensorboard = True
-# except ImportError:
-#     try:
-#         from tensorboardX import SummaryWriter
-#
-#         _has_tensorboard = True
-#     except ImportError:
-#         _has_tensorboard = False
-
-
 def is_tensorboard_available():
     return False
-
 
 try:
     import wandb
@@ -77,13 +61,11 @@ try:
 except ImportError:
     _has_wandb = False
 
-
 def is_wandb_available():
     return _has_wandb
 
 
 logger = logging.getLogger()
-
 
 def set_seed(seed: int):
     random.seed(seed)
@@ -91,7 +73,6 @@ def set_seed(seed: int):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     # ^^ safe to call this function even if cuda is not available
-
 
 @contextmanager
 def torch_distributed_zero_first(local_rank: int):
@@ -148,12 +129,10 @@ class SequentialDistributedSampler(Sampler):
     def __len__(self):
         return self.num_samples
 
-
 def get_tpu_sampler(dataset: Dataset):
     if xm.xrt_world_size() <= 1:
         return RandomSampler(dataset)
     return DistributedSampler(dataset, num_replicas=xm.xrt_world_size(), rank=xm.get_ordinal())
-
 
 def js_div(p, q):
     m = (p + q) / 2
@@ -161,27 +140,6 @@ def js_div(p, q):
     b = F.kl_div(q.log(), m, reduction='batchmean')
     jsd = ((a + b) / 2)
     return jsd
-
-
-def js_element(p, q):
-    m = (p + q) / 2
-    js = []
-    for i in range(len(p)):
-        #pdb.set_trace()
-        js_1 = F.kl_div(p.log()[i], m[i])
-        js_2 = F.kl_div(q.log()[i], m[i])
-        js.append((js_1 + js_2) / 2)
-    return js
-
-
-def js_div_3(p1, p2, p3):
-    m = (p1 + p2 + p3) / 3
-    a = F.kl_div(p1.log(), m, reduction='batchmean')
-    b = F.kl_div(p2.log(), m, reduction='batchmean')
-    c = F.kl_div(p3.log(), m, reduction='batchmean')
-    jsd = ((a + b + c) / 3)
-    return jsd
-
 
 def cross_entropy(pred, soft_targets):
     logsoftmax = nn.LogSoftmax()
@@ -675,7 +633,6 @@ class Trainer:
 
         return input_embeds, input_masks
 
-
     def generate_token_cutoff_embedding(self, embeds, masks, input_lens):
         input_embeds = []
         input_masks = []
@@ -719,7 +676,6 @@ class Trainer:
 
             input_embeds.append(cutoff_embed)
             input_masks.append(cutoff_mask)
-            #pdb.set_trace()
         input_embeds = torch.stack(input_embeds, dim=0)
         input_masks = torch.stack(input_masks, dim=0)
 
@@ -818,7 +774,6 @@ class Trainer:
 
         return self._resolve_loss_item(loss, optimizer)
 
-
     def _training_step_with_token_cutoff(
             self, model: nn.Module, inputs: Dict[str, torch.Tensor], optimizer: torch.optim.Optimizer
     ) -> float:
@@ -847,7 +802,6 @@ class Trainer:
 
             if self.args.aug_ce_loss > 0:
                 loss += self.args.aug_ce_loss * cutoff_outputs[0]
-                #pdb.set_trace()
 
             if self.args.aug_js_loss > 0:
                 assert self.args.n_gpu == 1
@@ -857,10 +811,8 @@ class Trainer:
                 q = torch.softmax(aug_logits + 1e-10, dim=1)
                 aug_js_loss = js_div(p, q)
                 loss += self.args.aug_js_loss * aug_js_loss
-                #pdb.set_trace()
 
         return self._resolve_loss_item(loss, optimizer)
-
 
     def is_local_master(self) -> bool:
         if is_tpu_available():
@@ -977,17 +929,11 @@ class Trainer:
             else:
                 self.eval_key_axis = 1
 
-        # if self.compute_metrics is None:
-        #     eval_step = [self.global_step, metrics['eval_loss'], output_dir]
-        # else:
-        #     eval_step = [self.global_step] + [metrics[k] for k in sorted(metrics.keys())] + \
-        #                 [metrics['eval_loss'], output_dir]
         self.eval_history.append([self.global_step] + [metrics[k] for k in self.eval_header if k in metrics] + [output_dir])
         self.save_model(output_dir)
         if not self._pop_checkpoints():
             torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
             torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"))
-            # logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
     def evaluate(
         self, eval_dataset: Optional[Dataset] = None, prediction_loss_only: Optional[bool] = None,

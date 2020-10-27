@@ -5,12 +5,13 @@ This repository contains source code necessary to reproduce the results presente
 
 This project is maintained by [Dinghan Shen](https://sites.google.com/view/dinghanshen). Feel free to contact dishen@microsoft.com for any relevant issues.
 
-## Prerequisite: 
+## Natural Language Undertanding (e.g. GLUE tasks, etc.) 
+### Prerequisite: 
 * CUDA, cudnn
 * Python 3.7
 * PyTorch 1.4.0
 
-## Run
+### Run
 1. Install Huggingface Transformers according to the instructions here: https://github.com/huggingface/transformers.
 
 2. Download the datasets from the GLUE benchmark:
@@ -33,7 +34,24 @@ python download_glue_data.py --data_dir glue_data --tasks all
 - `model_name_or_path`: the pre-trained for initialization (both RoBERTa-base or RoBERTa-large models are supported).
 - `output_dir`: the folder results being saved to.
 
+## Natural Language Generation (e.g. Translation, etc.)
 
+Please refer to translation task [README](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for more 
+
+### IWSLT'14 German to English (Transformers)
+| Task          | Setting           | Approach   | BLEU      |
+|---------------|-------------------|------------|-----------|
+| iwslt14 de-en | transformer-small | w/o cutoff | 36.24     |
+| iwslt14 de-en | transformer-small | w/ cutoff  | **37.61** |
+
+### WMT'14 English to German (Transformers)
+
+| Task          | Setting           | Approach   | BLEU      |
+|---------------|-------------------|------------|-----------|
+| wmt14 en-de   | transformer-base  | w/o cutoff | 28.61     |
+| wmt14 en-de   | transformer-base  | w/ cutoff  | 29.06     |
+| wmt14 en-de   | transformer-big   | w/o cutoff | 29.47     |
+| wmt14 en-de   | transformer-big   | w/ cutoff  | **30.30** |
 
 ## Citation 
 Please cite our paper in your publications if it helps your research:

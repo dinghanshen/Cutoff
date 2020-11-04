@@ -36,7 +36,7 @@ python download_glue_data.py --data_dir glue_data --tasks all
 
 ## Natural Language Generation (e.g. Translation, etc.)
 
-Please refer to translation task [README](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for more 
+Please refer to cutoff-translation [README](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for reproducing results below
 
 ### IWSLT'14 German to English (Transformers)
 | Task          | Setting           | Approach   | BLEU     |
@@ -49,7 +49,7 @@ Please refer to translation task [README](https://github.com/stevezheng23/fairse
 | Task          | Setting           | Approach   | BLEU     |
 |---------------|-------------------|------------|----------|
 | wmt14 en-de   | transformer-base  | w/o cutoff | 28.6     |
-| wmt14 en-de   | transformer-base  | w/ cutoff  | 29.1     |
+| wmt14 en-de   | transformer-base  | w/ cutoff  | **29.1** |
 | wmt14 en-de   | transformer-big   | w/o cutoff | 29.5     |
 | wmt14 en-de   | transformer-big   | w/ cutoff  | **30.3** |
 

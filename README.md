@@ -39,19 +39,19 @@ python download_glue_data.py --data_dir glue_data --tasks all
 Please refer to translation task [README](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for more 
 
 ### IWSLT'14 German to English (Transformers)
-| Task          | Setting           | Approach   | BLEU      |
-|---------------|-------------------|------------|-----------|
-| iwslt14 de-en | transformer-small | w/o cutoff | 36.24     |
-| iwslt14 de-en | transformer-small | w/ cutoff  | **37.61** |
+| Task          | Setting           | Approach   | BLEU     |
+|---------------|-------------------|------------|----------|
+| iwslt14 de-en | transformer-small | w/o cutoff | 36.2     |
+| iwslt14 de-en | transformer-small | w/ cutoff  | **37.6** |
 
 ### WMT'14 English to German (Transformers)
 
-| Task          | Setting           | Approach   | BLEU      |
-|---------------|-------------------|------------|-----------|
-| wmt14 en-de   | transformer-base  | w/o cutoff | 28.61     |
-| wmt14 en-de   | transformer-base  | w/ cutoff  | 29.06     |
-| wmt14 en-de   | transformer-big   | w/o cutoff | 29.47     |
-| wmt14 en-de   | transformer-big   | w/ cutoff  | **30.30** |
+| Task          | Setting           | Approach   | BLEU     |
+|---------------|-------------------|------------|----------|
+| wmt14 en-de   | transformer-base  | w/o cutoff | 28.6     |
+| wmt14 en-de   | transformer-base  | w/ cutoff  | 29.1     |
+| wmt14 en-de   | transformer-big   | w/o cutoff | 29.5     |
+| wmt14 en-de   | transformer-big   | w/ cutoff  | **30.3** |
 
 ## Citation 
 Please cite our paper in your publications if it helps your research:

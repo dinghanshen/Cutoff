@@ -36,7 +36,7 @@ python download_glue_data.py --data_dir glue_data --tasks all
 
 ## Natural Language Generation (e.g. Translation, etc.)
 
-Please refer to cutoff-translation [README](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for reproducing results below
+Please refer to [Neural Machine Translation with Data Augmentation](https://github.com/stevezheng23/fairseq_extension/tree/master/examples/translation/augmentation) for more details
 
 ### IWSLT'14 German to English (Transformers)
 | Task          | Setting           | Approach   | BLEU     |
